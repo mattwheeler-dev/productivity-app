@@ -1,9 +1,11 @@
-function App() {
+import { DashboardLayout } from "./layouts/DashboardLayout";
+
+const App = () => {
 	return (
-		<>
-			<h1>TaskPilot coming soon...</h1>
-		</>
+		<DashboardLayout>
+			<div className="p-4">content goes here</div>
+		</DashboardLayout>
 	);
-}
+};
 
 export default App;
