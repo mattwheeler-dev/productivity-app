@@ -6,6 +6,7 @@ import Tasks from "./pages/Tasks";
 import Projects from "./pages/Projects";
 import Calendar from "./pages/Calendar";
 import Settings from "./pages/Settings";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
 	return (
@@ -16,7 +17,14 @@ const App = () => {
 				<Route path="/signup" element={<Signup />} />
 
 				{/* Protected routes */}
-				<Route path="/dashboard" element={<Dashboard />}>
+				<Route
+					path="/dashboard"
+					element={
+						<ProtectedRoute>
+							<Dashboard />
+						</ProtectedRoute>
+					}
+				>
 					<Route path="tasks" element={<Tasks />} />
 					<Route path="projects" element={<Projects />} />
 					<Route path="calendar" element={<Calendar />} />

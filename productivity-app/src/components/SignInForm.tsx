@@ -1,5 +1,5 @@
-// src/components/SignInForm.tsx
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
 const SignInForm = () => {
@@ -7,6 +7,7 @@ const SignInForm = () => {
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
+	const navigate = useNavigate();
 
 	const handleSignIn = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -21,8 +22,8 @@ const SignInForm = () => {
 		if (error) {
 			setError(error.message);
 		} else {
-			// success — could redirect here
 			console.log("Signed in!");
+			navigate("/dashboard");
 		}
 
 		setLoading(false);
