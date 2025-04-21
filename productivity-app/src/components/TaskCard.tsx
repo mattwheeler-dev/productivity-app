@@ -1,15 +1,7 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import ConfirmDeleteModal from "./ConfirmDeleteModal"; // adjust path as needed
-
-type Task = {
-	id: number;
-	title: string;
-	details: string;
-	due_date?: string;
-	completed: boolean;
-	user_id: string;
-};
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { Task } from "../types/task";
 
 const TaskCard = ({
 	task,

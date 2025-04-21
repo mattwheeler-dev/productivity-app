@@ -1,22 +1,27 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../supabaseClient";
-import { useSession } from "@supabase/auth-helpers-react";
+import { supabase } from "../lib/supabaseClient";
 import { Plus } from "lucide-react";
 import TaskCard from "../components/TaskCard";
 import NewTaskForm from "../components/NewTaskForm";
-
-type Task = {
-	id: number;
-	title: string;
-	details: string;
-	due_date?: string;
-	completed: boolean;
-	user_id: string;
-};
+import { Task } from "../types/task";
 
 const Tasks = () => {
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [showForm, setShowForm] = useState(false);
+
+	useEffect(() => {
+		const fetchTasks = async () => {
+			const { data, error } = await supabase
+				.from("tasks")
+				.select("*")
+				.order("created_at", { ascending: false });
+
+			if (error) console.error("Error fetching tasks:", error);
+			else setTasks(data);
+		};
+
+		fetchTasks();
+	}, []);
 
 	const addTask = (task: {
 		title: string;
