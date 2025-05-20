@@ -70,7 +70,15 @@ const Tasks = () => {
 		}
 	};
 
-	const deleteTask = () => {};
+	const deleteTask = async (id: number) => {
+		const { error } = await supabase.from("tasks").delete().eq("id", id);
+
+		if (error) {
+			console.error("Error deleting task:", error);
+		} else {
+			setTasks((prev) => prev.filter((task) => task.id !== id));
+		}
+	};
 
 	return (
 		<div className="p-6 max-w-3xl mx-auto">

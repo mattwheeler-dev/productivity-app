@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "../lib/supabaseClient";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { Task } from "../types/task";
@@ -17,7 +18,20 @@ const TaskCard = ({
 	const [showModal, setShowModal] = useState(false);
 
 	const toggleExpanded = () => setIsExpanded((prev) => !prev);
-	const handleCheckboxChange = () => setIsCompleted((prev) => !prev);
+
+	const handleCheckboxChange = async () => {
+		const newCompleted = !isCompleted;
+		setIsCompleted(newCompleted);
+
+		const { error } = await supabase
+			.from("tasks")
+			.update({ completed: newCompleted })
+			.eq("id", task.id);
+
+		if (error) {
+			console.error("Error updating task completion:", error);
+		}
+	};
 
 	const handleEdit = () => {
 		setEditTask({ ...task, completed: isCompleted });
@@ -29,10 +43,24 @@ const TaskCard = ({
 		setIsEditing(false);
 	};
 
-	const handleSave = () => {
+	const handleSave = async () => {
 		const updatedTask = { ...editTask, completed: isCompleted };
-		console.log("Saving task:", updatedTask);
-		setIsEditing(false);
+
+		const { error } = await supabase
+			.from("tasks")
+			.update({
+				title: updatedTask.title,
+				details: updatedTask.details,
+				due_date: updatedTask.due_date || null,
+				completed: updatedTask.completed,
+			})
+			.eq("id", updatedTask.id);
+
+		if (error) {
+			console.error("Error updating task:", error);
+		} else {
+			setIsEditing(false);
+		}
 	};
 
 	const confirmDelete = () => {
