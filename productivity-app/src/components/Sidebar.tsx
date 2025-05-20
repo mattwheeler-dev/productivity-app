@@ -1,17 +1,25 @@
-export const Sidebar = () => {
+import { Link } from "react-router-dom";
+
+const Sidebar = () => {
 	return (
-		<aside className="w-64 bg-white border-r h-full p-4">
-			<nav className="space-y-4">
-				<div className="text-gray-500 uppercase text-sm font-bold mb-2">
-					Menu
-				</div>
-				<ul className="space-y-2">
-					<li className="hover:text-blue-600 cursor-pointer">Dashboard</li>
-					<li className="hover:text-blue-600 cursor-pointer">Tasks</li>
-					<li className="hover:text-blue-600 cursor-pointer">Calendar</li>
-					<li className="hover:text-blue-600 cursor-pointer">Notes</li>
-				</ul>
+		<aside className="w-64 bg-gray-800 text-white p-4">
+			<h1 className="text-xl font-bold mb-6">TaskPilot</h1>
+			<nav className="space-y-3">
+				<Link to="tasks" className="block hover:underline">
+					🗒️ Tasks
+				</Link>
+				<Link to="projects" className="block hover:underline">
+					📁 Projects
+				</Link>
+				<Link to="calendar" className="block hover:underline">
+					📅 Calendar
+				</Link>
+				<Link to="settings" className="block hover:underline">
+					⚙️ Settings
+				</Link>
 			</nav>
 		</aside>
 	);
 };
+
+export default Sidebar;
