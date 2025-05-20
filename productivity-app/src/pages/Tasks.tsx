@@ -37,7 +37,39 @@ const Tasks = () => {
 		fetchTasks();
 	}, []);
 
-	const addTask = () => {};
+	const addTask = async (task: {
+		title: string;
+		details: string;
+		due_date?: string;
+	}) => {
+		const {
+			data: { user },
+			error: userError,
+		} = await supabase.auth.getUser();
+
+		if (userError || !user) {
+			console.error("User not found:", userError);
+			return;
+		}
+
+		const { data, error } = await supabase
+			.from("tasks")
+			.insert([
+				{
+					...task,
+					user_id: user.id,
+					completed: false,
+				},
+			])
+			.select();
+
+		if (error) {
+			console.error("Error adding task:", error);
+		} else if (data && data.length > 0) {
+			setTasks((prev) => [data![0], ...prev]);
+		}
+	};
+
 	const deleteTask = () => {};
 
 	return (

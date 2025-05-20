@@ -4,7 +4,7 @@ type NewTaskFormProps = {
 	onAddTask: (task: {
 		title: string;
 		details: string;
-		dueDate?: string;
+		due_date?: string;
 	}) => void;
 	onCancel: () => void;
 };
@@ -18,11 +18,11 @@ const NewTaskForm = ({ onAddTask, onCancel }: NewTaskFormProps) => {
 		e.preventDefault();
 		if (!title.trim()) return;
 
-		onAddTask({ title, details, dueDate });
+		onAddTask({ title, details, due_date: dueDate || undefined });
 		setTitle("");
 		setDetails("");
 		setDueDate("");
-		onCancel(); // hide form after submit
+		onCancel();
 	};
 
 	return (
