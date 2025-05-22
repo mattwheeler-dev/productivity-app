@@ -14,3 +14,7 @@
 	--color-text-primary: #1f2937;
 	--color-text-secondary: #6b7280;
 }
+
+button {
+	cursor: pointer;
+}
