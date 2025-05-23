@@ -4,6 +4,7 @@ import TaskCard from "../components/TaskCard";
 import NewTaskForm from "../components/NewTaskForm";
 import { supabase } from "../lib/supabaseClient";
 import { Task } from "../types/task";
+import { toast } from "sonner";
 
 const Tasks = () => {
 	const [tasks, setTasks] = useState<Task[]>([]);
@@ -71,12 +72,42 @@ const Tasks = () => {
 	};
 
 	const deleteTask = async (id: number) => {
+		const taskToDelete = tasks.find((t) => t.id === id);
+		if (!taskToDelete) {
+			return;
+		}
+
+		// Remove from UI
+		setTasks((prev) => prev.filter((task) => task.id !== id));
+
+		// Show toast with undo btn
+		toast(`Task "${taskToDelete.title}" deleted`, {
+			action: {
+				label: "Undo",
+				// Restore task
+				onClick: async () => {
+					const { error: insertError } = await supabase
+						.from("tasks")
+						.insert([taskToDelete]);
+
+					if (insertError) {
+						console.error(
+							`Error restoring task: ${taskToDelete?.title}`,
+							insertError
+						);
+						toast.error(`Failed to restore task: "${taskToDelete.title}"...`);
+					} else {
+						setTasks((prev) => [taskToDelete, ...prev]);
+						toast.success("Task restored!");
+					}
+				},
+			},
+		});
+
 		const { error } = await supabase.from("tasks").delete().eq("id", id);
 
 		if (error) {
 			console.error("Error deleting task:", error);
-		} else {
-			setTasks((prev) => prev.filter((task) => task.id !== id));
 		}
 	};
 
