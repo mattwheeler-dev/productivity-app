@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const SignupForm = () => {
 	const navigate = useNavigate();
@@ -15,23 +16,35 @@ const SignupForm = () => {
 		setLoading(true);
 		setError("");
 
+		// Check if email is already registered
+		const { error: signInError } = await supabase.auth.signInWithPassword({
+			email,
+			password,
+		});
+
+		//  If account already exists, show error message
+		if (!signInError) {
+			toast.error("There is already an account with this email.");
+			setLoading(false);
+			return;
+		}
+
 		const { error } = await supabase.auth.signUp({
 			email,
 			password,
 		});
 
 		if (error) {
+			console.log(error);
 			if (error.message.includes("already registered")) {
-				setError("An account already exists with this email.");
+				toast.error("There is already an account with this email.");
 			} else {
 				setError(error.message);
 			}
 		} else {
-			// Email confirmation required
-			alert("Check your email to confirm your account!");
-			navigate("/signin"); // or wherever you want to send them
+			toast.success("Account created! Check your email to confirm.");
+			navigate("/signin");
 		}
-
 		setLoading(false);
 	};
 

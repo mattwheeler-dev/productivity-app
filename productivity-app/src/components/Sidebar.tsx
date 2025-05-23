@@ -10,7 +10,7 @@ const Sidebar = () => {
 			console.error("Error signing out:", error.message);
 		} else {
 			console.log("User signed out successfully");
-			navigate("/");
+			navigate("/signin");
 		}
 	};
 
