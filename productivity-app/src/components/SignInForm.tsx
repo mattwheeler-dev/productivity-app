@@ -30,37 +30,41 @@ const SignInForm = () => {
 	};
 
 	return (
-		<form onSubmit={handleSignIn} className="space-y-4 w-full max-w-sm mx-auto">
-			<h2 className="text-xl font-semibold text-center">Sign In</h2>
-
-			<input
-				type="email"
-				placeholder="Email"
-				value={email}
-				onChange={(e) => setEmail(e.target.value)}
-				required
-				className="w-full p-2 border rounded"
-			/>
-
-			<input
-				type="password"
-				placeholder="Password"
-				value={password}
-				onChange={(e) => setPassword(e.target.value)}
-				required
-				className="w-full p-2 border rounded"
-			/>
-
-			{error && <p className="text-red-500 text-sm">{error}</p>}
-
-			<button
-				type="submit"
-				disabled={loading}
-				className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+		<div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+			<h2 className="text-2xl font-bold mb-4 text-center">Sign In</h2>
+			<form
+				onSubmit={handleSignIn}
+				className="space-y-4 w-full max-w-sm mx-auto"
 			>
-				{loading ? "Signing in..." : "Sign In"}
-			</button>
-		</form>
+				<input
+					type="email"
+					placeholder="Email"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					required
+					className="w-full p-2 border rounded"
+				/>
+
+				<input
+					type="password"
+					placeholder="Password"
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+					required
+					className="w-full p-2 border rounded"
+				/>
+
+				{error && <p className="text-red-500 text-sm">{error}</p>}
+
+				<button
+					type="submit"
+					disabled={loading}
+					className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+				>
+					{loading ? "Signing in..." : "Sign In"}
+				</button>
+			</form>
+		</div>
 	);
 };
 

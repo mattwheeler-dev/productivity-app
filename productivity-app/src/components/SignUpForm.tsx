@@ -15,17 +15,21 @@ const SignupForm = () => {
 		setLoading(true);
 		setError("");
 
-		const { data, error } = await supabase.auth.signUp({
+		const { error } = await supabase.auth.signUp({
 			email,
 			password,
 		});
 
 		if (error) {
-			setError(error.message);
+			if (error.message.includes("already registered")) {
+				setError("An account already exists with this email.");
+			} else {
+				setError(error.message);
+			}
 		} else {
 			// Email confirmation required
 			alert("Check your email to confirm your account!");
-			navigate("/dashboard"); // or wherever you want to send them
+			navigate("/signin"); // or wherever you want to send them
 		}
 
 		setLoading(false);

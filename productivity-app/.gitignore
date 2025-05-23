@@ -10,6 +10,7 @@ lerna-debug.log*
 # Configs
 *config*
 .env
+components.json
 
 node_modules
 dist

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
-import Signup from "./pages/Signup";
+import Signup from "./pages/Signin";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Projects from "./pages/Projects";
@@ -14,7 +14,7 @@ const App = () => {
 			<Routes>
 				{/* Public routes */}
 				<Route path="/" element={<Landing />} />
-				<Route path="/signup" element={<Signup />} />
+				<Route path="/signin" element={<Signup />} />
 
 				{/* Protected routes */}
 				<Route
