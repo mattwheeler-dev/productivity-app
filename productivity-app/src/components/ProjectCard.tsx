@@ -177,7 +177,7 @@ const ProjectCard = ({
 				isOpen={showModal}
 				onCancel={() => setShowModal(false)}
 				onConfirm={confirmDelete}
-				projectTitle={Project.title}
+				taskTitle={project.title}
 			/>
 		</div>
 	);

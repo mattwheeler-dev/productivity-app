@@ -62,7 +62,7 @@ const Projects = () => {
 			.select();
 
 		if (error) {
-			console.error("Error adding task:", error);
+			console.error("Error adding project:", error);
 		} else if (data && data.length > 0) {
 			setProjects((prev) => [data![0], ...prev]);
 		}
