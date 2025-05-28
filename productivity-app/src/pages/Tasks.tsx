@@ -112,7 +112,7 @@ const Tasks = () => {
 	};
 
 	return (
-		<div className="p-6 max-w-3xl mx-auto">
+		<section className="p-6 max-w-3xl mx-auto">
 			<h2 className="text-2xl font-semibold mb-6">📝 Tasks</h2>
 
 			{showForm ? (
@@ -136,7 +136,7 @@ const Tasks = () => {
 					))
 				)}
 			</div>
-		</div>
+		</section>
 	);
 };
 

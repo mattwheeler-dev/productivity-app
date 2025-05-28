@@ -1,20 +1,20 @@
 import { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "@/lib/supabase";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import { Task } from "../types/task";
+import { Project } from "../types/project";
 
-const TaskCard = ({
-	task,
+const ProjectCard = ({
+	project,
 	onDelete,
 }: {
-	task: Task;
+	project: Project;
 	onDelete: (id: number) => void;
 }) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
-	const [editTask, setEditTask] = useState(task);
-	const [isCompleted, setIsCompleted] = useState(task.completed);
+	const [editProject, setEditProject] = useState(project);
+	const [isCompleted, setIsCompleted] = useState(project.completed);
 	const [showModal, setShowModal] = useState(false);
 
 	const toggleExpanded = () => setIsExpanded((prev) => !prev);
@@ -24,47 +24,47 @@ const TaskCard = ({
 		setIsCompleted(newStatus);
 
 		const { error } = await supabase
-			.from("tasks")
+			.from("projects")
 			.update({ completed: newStatus })
-			.eq("id", task.id);
+			.eq("id", project.id);
 
 		if (error) {
-			console.error("Error updating task completion:", error);
+			console.error("Error updating project completion:", error);
 		}
 	};
 
 	const handleEdit = () => {
-		setEditTask({ ...task, completed: isCompleted });
+		setEditProject({ ...project, completed: isCompleted });
 		setIsEditing(true);
 	};
 
 	const handleCancel = () => {
-		setEditTask(task);
+		setEditProject(project);
 		setIsEditing(false);
 	};
 
 	const handleSave = async () => {
-		const updatedTask = { ...editTask, completed: isCompleted };
+		const updatedProject = { ...editProject, completed: isCompleted };
 
 		const { error } = await supabase
-			.from("tasks")
+			.from("projects")
 			.update({
-				title: updatedTask.title,
-				details: updatedTask.details,
-				due_date: updatedTask.due_date || null,
-				completed: updatedTask.completed,
+				title: updatedProject.title,
+				details: updatedProject.details,
+				due_date: updatedProject.due_date || null,
+				completed: updatedProject.completed,
 			})
-			.eq("id", updatedTask.id);
+			.eq("id", updatedProject.id);
 
 		if (error) {
-			console.error("Error updating task:", error);
+			console.error("Error updating project:", error);
 		} else {
 			setIsEditing(false);
 		}
 	};
 
 	const confirmDelete = () => {
-		onDelete(task.id);
+		onDelete(project.id);
 		setShowModal(false);
 	};
 
@@ -85,14 +85,14 @@ const TaskCard = ({
 					{isEditing ? (
 						<input
 							type="text"
-							value={editTask.title}
+							value={editProject.title}
 							onChange={(e) =>
-								setEditTask((prev) => ({ ...prev, title: e.target.value }))
+								setEditProject((prev) => ({ ...prev, title: e.target.value }))
 							}
 							className="text-lg font-medium border-b w-full focus:outline-none"
 						/>
 					) : (
-						<h3 className="text-lg font-medium">{editTask.title}</h3>
+						<h3 className="text-lg font-medium">{editProject.title}</h3>
 					)}
 				</div>
 				<button onClick={toggleExpanded}>
@@ -105,9 +105,9 @@ const TaskCard = ({
 					{isEditing ? (
 						<>
 							<textarea
-								value={editTask.details}
+								value={editProject.details}
 								onChange={(e) =>
-									setEditTask((prev) => ({
+									setEditProject((prev) => ({
 										...prev,
 										details: e.target.value,
 									}))
@@ -116,9 +116,9 @@ const TaskCard = ({
 							/>
 							<input
 								type="date"
-								value={editTask.due_date || ""}
+								value={editProject.due_date || ""}
 								onChange={(e) =>
-									setEditTask((prev) => ({
+									setEditProject((prev) => ({
 										...prev,
 										due_date: e.target.value,
 									}))
@@ -128,10 +128,10 @@ const TaskCard = ({
 						</>
 					) : (
 						<>
-							<p className="text-gray-700">{editTask.details}</p>
-							{editTask.due_date && (
+							<p className="text-gray-700">{editProject.details}</p>
+							{editProject.due_date && (
 								<p className="text-sm text-gray-500">
-									Due: {editTask.due_date}
+									Due: {editProject.due_date}
 								</p>
 							)}
 						</>
@@ -177,10 +177,10 @@ const TaskCard = ({
 				isOpen={showModal}
 				onCancel={() => setShowModal(false)}
 				onConfirm={confirmDelete}
-				taskTitle={task.title}
+				projectTitle={Project.title}
 			/>
 		</div>
 	);
 };
 
-export default TaskCard;
+export default ProjectCard;

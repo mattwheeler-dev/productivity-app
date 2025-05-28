@@ -1,4 +1,4 @@
-export interface Project {
+export type Project = {
 	id: number;
 	user_id: string;
 	title: string;
@@ -6,4 +6,4 @@ export interface Project {
 	due_date?: string;
 	completed: boolean;
 	created_at: string;
-}
+};
