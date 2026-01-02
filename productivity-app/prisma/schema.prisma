@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+
+  tasks  Task[]
+  habits Habit[]
+  notes  Note[]
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  dueDate     DateTime?
+  completedAt DateTime?
+  priority    Int       @default(0)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Habit {
+  id        String   @id @default(cuid())
+  title     String
+  frequency String
+  userId    String
+
+  user        User             @relation(fields: [userId], references: [id])
+  completions HabitCompletion[]
+
+  createdAt DateTime @default(now())
+}
+
+model HabitCompletion {
+  id      String   @id @default(cuid())
+  habitId String
+  date    DateTime
+
+  habit Habit @relation(fields: [habitId], references: [id])
+
+  @@unique([habitId, date])
+}
+
+model Note {
+  id      String @id @default(cuid())
+  title   String
+  content String
+
+  userId String
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
